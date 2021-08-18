@@ -1,0 +1,6 @@
+{
+    "require": {
+        "phpunit/php-timer": "^5.0",
+        "twbs/bootstrap": "5.0.2"
+    }
+}

@@ -1,0 +1,35 @@
+version: "3.1"
+services:
+    php:
+      build:
+        context: ./
+        dockerfile: php.Dockerfile
+      container_name: php-73-test
+      volumes:
+        - ./:/var/www/html
+
+    webserver:
+      image: nginx:1.17.10
+      container_name: nginx-webserver-test
+      links:
+        - php:fpm
+      environment:
+        - FPM_HOST=fpm
+        - FPM_PORT=9000
+      volumes:
+        - ./:/var/www/html
+        - ./docker/nginx_conf:/etc/nginx/conf.d/
+      ports:
+       - "8088:80"
+
+    db:
+      platform: linux/x86_64
+      image: mysql:5.7
+      container_name: mysql-db-test
+      environment:
+        MYSQL_ROOT_PASSWORD: root
+        MYSQL_DATABASE: sampleDB
+        MYSQL_USER: sampleUser
+        MYSQL_PASSWORD: password
+      ports:
+        - 3308:3306
